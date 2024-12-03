@@ -2,13 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"nitflex/internal/handler"
+	"nitflex/internal/repository"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
-	"nitflex/internal/handler"
-	"nitflex/internal/repository"
 )
 
 func main() {
@@ -25,6 +27,15 @@ func main() {
 	h := handler.NewHandler(db)
 
 	routes := gin.Default()
+
+	// Add CORS middleware
+	routes.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:4444"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	routes.POST("/register", h.Register)
 	routes.POST("/login", h.Login)
