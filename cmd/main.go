@@ -5,6 +5,7 @@ import (
 	"log"
 	"nitflex/internal/handler"
 	"nitflex/internal/repository"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -30,7 +31,7 @@ func main() {
 
 	// Add CORS middleware
 	routes.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:4444"},
+		AllowOrigins:     []string{os.Getenv("WEB_URL")},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
