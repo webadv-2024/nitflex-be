@@ -28,8 +28,7 @@ func main() {
 
 	routes.POST("/register", h.Register)
 	routes.POST("/login", h.Login)
-	routes.GET("/auth/google", h.GoogleLogin)
-	routes.GET("/auth/google/callback", h.GoogleCallback)
+	routes.POST("/login/google", h.GoogleLogin)
 
 	routes.Run(":3000")
 }
