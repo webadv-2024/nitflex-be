@@ -14,13 +14,6 @@ import (
 	"time"
 )
 
-type GoogleUserInfo struct {
-	Email    string `json:"email"`
-	Name     string `json:"name"`
-	Picture  string `json:"picture"`
-	Verified bool   `json:"verified_email"`
-}
-
 func (b *business) GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error) {
 	// Get user info from Google
 	userInfo, err := b.getGoogleUserInfo(request.AccessToken)
