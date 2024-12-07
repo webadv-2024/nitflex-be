@@ -7,6 +7,7 @@ const (
 	ErrorMessage_UsernameExisted           = "Username Existed"
 	ErrorMessage_EmailExisted              = "Email Existed"
 	ErrorMessage_InvalidUsernameOrPassword = "Invalid Username Or Password"
+	ErrorMessage_InvalidGoogleToken        = "invalid google token"
 )
 
 const (
