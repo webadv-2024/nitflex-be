@@ -33,6 +33,9 @@ func main() {
 	routes.POST("/login", h.Login)
 	routes.POST("/login/google", h.GoogleLogin)
 
+	routes.GET("/movies/trending", h.GetTrendingMovies)
+	routes.GET("/movies", h.GetMovies)
+
 	routes.Run(":3000")
 }
 

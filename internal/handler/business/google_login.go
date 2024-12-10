@@ -54,7 +54,7 @@ func (b *business) GoogleLogin(ctx context.Context, request *models.GoogleLoginR
 	}, nil
 }
 
-func (b *business) getGoogleUserInfo(accessToken string) (*GoogleUserInfo, error) {
+func (b *business) getGoogleUserInfo(accessToken string) (*models.GoogleUserInfo, error) {
 	url := "https://www.googleapis.com/oauth2/v2/userinfo"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func (b *business) getGoogleUserInfo(accessToken string) (*GoogleUserInfo, error
 	}
 
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
-	
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -74,7 +74,7 @@ func (b *business) getGoogleUserInfo(accessToken string) (*GoogleUserInfo, error
 		return nil, fmt.Errorf("failed to get user info")
 	}
 
-	var userInfo GoogleUserInfo
+	var userInfo models.GoogleUserInfo
 	if err := json.NewDecoder(resp.Body).Decode(&userInfo); err != nil {
 		return nil, err
 	}
