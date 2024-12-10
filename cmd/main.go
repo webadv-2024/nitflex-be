@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"nitflex/internal/handler"
+	"nitflex/internal/repository"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
-	"nitflex/internal/handler"
-	"nitflex/internal/repository"
 )
 
 func main() {
@@ -33,8 +34,10 @@ func main() {
 	routes.POST("/login", h.Login)
 	routes.POST("/login/google", h.GoogleLogin)
 
+	routes.GET("/healthcheck", h.HealthCheck)
 	routes.GET("/movies/trending", h.GetTrendingMovies)
 	routes.GET("/movies", h.GetMovies)
+
 
 	routes.Run(":3000")
 }
