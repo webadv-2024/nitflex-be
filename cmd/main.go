@@ -37,6 +37,7 @@ func main() {
 	routes.GET("/healthcheck", h.HealthCheck)
 	routes.GET("/movies/trending", h.GetTrendingMovies)
 	routes.GET("/movies", h.GetMovies)
+	routes.GET("/movies/:id", h.GetMovieDetail)
 
 
 	routes.Run(":3000")

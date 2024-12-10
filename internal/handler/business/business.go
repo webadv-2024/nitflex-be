@@ -17,6 +17,7 @@ type Business interface {
 
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models2.Movie, error)
 	GetMovies(ctx context.Context, query string, page int) (*models2.GetMoviesResponse, error)
+	GetMovieDetail(ctx context.Context, id int) (*models2.GetMovieDetailResponse, error)
 }
 
 type business struct {

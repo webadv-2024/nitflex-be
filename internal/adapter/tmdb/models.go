@@ -10,3 +10,7 @@ type SearchMoviesRequest struct {
 	Language string
 	Page     int
 }
+
+type GetMovieDetailRequest struct {
+	Id  int
+}
