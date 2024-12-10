@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"nitflex/internal/handler/models"
+	"os"
 )
 
 func (t *tmdbAdapter) SearchMovies(ctx context.Context, request *SearchMoviesRequest) (*models.GetMoviesResponse, error) {
@@ -14,8 +15,9 @@ func (t *tmdbAdapter) SearchMovies(ctx context.Context, request *SearchMoviesReq
 
 	req, _ := http.NewRequest("GET", url, nil)
 
+	access_token := os.Getenv("TMDB_ACCESS_TOKEN")
 	req.Header.Add("accept", "application/json")
-	req.Header.Add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NjVmNzdjOTgwNmVjOWZhYjI4ZDhkZTJhNTI1NzcyOCIsIm5iZiI6MTczMzc1NTU4MS4wNjksInN1YiI6IjY3NTcwMmJkNmYzN2Y2ZTg5YWRjODBkYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JEpxWGOdU2Y3LehfnmzQQlrXPAZfYTrnIoRc2cKZCT0")
+	req.Header.Add("Authorization", "Bearer "+access_token)
 
 	res, _ := http.DefaultClient.Do(req)
 
