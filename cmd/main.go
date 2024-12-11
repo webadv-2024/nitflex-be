@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/url"
 	"nitflex/internal/handler"
 	"nitflex/internal/repository"
+	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -44,7 +47,25 @@ func main() {
 }
 
 func initDb() (*gorm.DB, error) {
-	dsn := "root:123456@tcp(127.0.0.1:3343)/nitflex?charset=utf8mb4&parseTime=True&loc=Local"
+	rawURL := os.Getenv("DATABASE_URL")
+	parsedURL, err := url.Parse(rawURL)
+	if err != nil {
+		log.Fatalf("failed to parse database URL: %v", err)
+		return nil, err
+	}
+
+	user := parsedURL.User.Username()
+	password, _ := parsedURL.User.Password()
+	host := parsedURL.Host
+	path := strings.TrimPrefix(parsedURL.Path, "/")
+	query := parsedURL.RawQuery
+
+	// Ensure the query parameters are correctly formatted
+	if query != "" {
+		query = "?" + query
+	}
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s%s", user, password, host, path, query)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
