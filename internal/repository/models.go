@@ -11,8 +11,8 @@ type User struct {
 	Password              string     `gorm:"column:password"`
 	RefreshToken          string     `gorm:"column:refresh_token"`
 	RefreshTokenExpiresAt *time.Time `gorm:"column:refresh_token_expires_at"`
-	// CreatedAt             *time.Time `gorm:"column:created_at"`
-	// UpdatedAt             *time.Time `gorm:"column:updated_at"`
+	CreatedAt             *time.Time `gorm:"column:created_at"`
+	UpdatedAt             *time.Time `gorm:"column:updated_at"`
 }
 
 func (User) TableName() string { return "users" }
