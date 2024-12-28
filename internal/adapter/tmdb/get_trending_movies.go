@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"nitflex/internal/handler/models"
 	"os"
+
+	"nitflex/internal/models"
 )
 
-func (t *tmdbAdapter) GetTrendingMovies(ctx context.Context, request *GetTrendingMoviesRequest) (*models.GetMoviesResponse, error) {
-	url := fmt.Sprintf("https://api.themoviedb.org/3/trending/movie/%s?language=%s", request.TimeWindow, request.Language)
+func (t *tmdbAdapter) GetTrendingMovies(ctx context.Context, timeWindow string) (*models.GetMoviesResponse, error) {
+	url := fmt.Sprintf("https://api.themoviedb.org/3/trending/movie/%s", timeWindow)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

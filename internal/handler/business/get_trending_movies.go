@@ -6,8 +6,7 @@ import (
 
 	"nitflex/constant"
 
-	adapter "nitflex/internal/adapter/tmdb"
-	"nitflex/internal/handler/models"
+	"nitflex/internal/models"
 )
 
 func (b *business) GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models.Movie, error) {
@@ -15,10 +14,7 @@ func (b *business) GetTrendingMovies(ctx context.Context, timeWindow string) ([]
 		timeWindow = constant.TrendingMovies_TimeWindow_Day
 	}
 
-	response, err := b.tmdbAdapter.GetTrendingMovies(ctx, &adapter.GetTrendingMoviesRequest{
-		TimeWindow: timeWindow,
-		Language:   constant.EN_US_Language,
-	})
+	response, err := b.tmdbAdapter.GetTrendingMovies(ctx, timeWindow)
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
 	}

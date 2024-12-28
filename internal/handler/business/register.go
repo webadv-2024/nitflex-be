@@ -3,12 +3,12 @@ package business
 import (
 	"context"
 	"errors"
-	"nitflex/internal/handler/models"
-	"nitflex/internal/repository"
 
 	"gorm.io/gorm"
 
 	"nitflex/constant"
+	"nitflex/internal/models"
+	"nitflex/internal/repository"
 	"nitflex/util"
 )
 

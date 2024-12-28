@@ -5,13 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"gorm.io/gorm"
 	"net/http"
+	"time"
+
+	"gorm.io/gorm"
+
 	"nitflex/constant"
-	"nitflex/internal/handler/models"
+	"nitflex/internal/models"
 	"nitflex/internal/repository"
 	"nitflex/util"
-	"time"
 )
 
 func (b *business) GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error) {

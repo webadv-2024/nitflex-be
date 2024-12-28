@@ -4,17 +4,17 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"nitflex/internal/handler/models"
-	repository2 "nitflex/internal/repository"
 	"time"
 
 	"nitflex/constant"
+	"nitflex/internal/models"
+	"nitflex/internal/repository"
 	"nitflex/util"
 )
 
 func (b *business) Login(ctx context.Context, request *models.LoginRequest) (*models.LoginResponse, error) {
 	var (
-		user *repository2.User
+		user *repository.User
 		err  error
 	)
 
@@ -46,7 +46,7 @@ func (b *business) Login(ctx context.Context, request *models.LoginRequest) (*mo
 	}
 
 	// store refresh token
-	err = b.repo.UpdateRefreshToken(ctx, &repository2.UpdateRefreshTokenParams{
+	err = b.repo.UpdateRefreshToken(ctx, &repository.UpdateRefreshTokenParams{
 		UserId:                user.Id,
 		RefreshToken:          refreshToken,
 		RefreshTokenExpiresAt: time.Now().Add(constant.RefreshTokenExpriesIn),

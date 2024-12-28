@@ -2,10 +2,11 @@ package handler
 
 import (
 	"net/http"
-	"nitflex/internal/handler/models"
 	"nitflex/util"
 
 	"github.com/gin-gonic/gin"
+
+	"nitflex/internal/models"
 )
 
 func (h *Handler) GoogleLogin(c *gin.Context) {

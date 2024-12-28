@@ -2,9 +2,10 @@ package handler
 
 import (
 	"net/http"
-	"nitflex/internal/handler/models"
 
 	"github.com/gin-gonic/gin"
+
+	"nitflex/internal/models"
 	"nitflex/util"
 )
 

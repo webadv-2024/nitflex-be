@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"nitflex/internal/handler"
-	"nitflex/internal/repository"
 	"os"
 	"strings"
 
@@ -13,6 +11,9 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"nitflex/internal/handler"
+	"nitflex/internal/repository"
 )
 
 func main() {
@@ -41,7 +42,8 @@ func main() {
 	routes.GET("/movies/trending", h.GetTrendingMovies)
 	routes.GET("/movies", h.GetMovies)
 	routes.GET("/movies/:id", h.GetMovieDetail)
-
+	routes.GET("/casts", h.GetCasts)
+	routes.GET("/casts/:id", h.GetCastInfo)
 
 	routes.Run(":3000")
 }
@@ -66,6 +68,8 @@ func initDb() (*gorm.DB, error) {
 	}
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s%s", user, password, host, path, query)
+
+	// dsn := "root:123456@tcp(127.0.0.1:3343)/nitflex?charset=utf8mb4&parseTime=True&loc=Local"
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {

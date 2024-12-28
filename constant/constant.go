@@ -19,7 +19,3 @@ const (
 	TrendingMovies_TimeWindow_Day  = "day"
 	TrendingMovies_TimeWindow_Week = "week"
 )
-
-const (
-	EN_US_Language = "en-US"
-)

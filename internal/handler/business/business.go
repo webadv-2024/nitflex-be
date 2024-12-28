@@ -2,27 +2,24 @@ package business
 
 import (
 	"context"
-	adapter "nitflex/internal/adapter/tmdb"
 
 	"gorm.io/gorm"
 
-	models2 "nitflex/internal/handler/models"
+	adapter "nitflex/internal/adapter/tmdb"
+	"nitflex/internal/models"
 	"nitflex/internal/repository"
 )
 
 type Business interface {
-	Register(ctx context.Context, request *models2.RegisterRequest) error
-	Login(ctx context.Context, request *models2.LoginRequest) (*models2.LoginResponse, error)
-	GoogleLogin(ctx context.Context, request *models2.GoogleLoginRequest) (*models2.LoginResponse, error)
+	Register(ctx context.Context, request *models.RegisterRequest) error
+	Login(ctx context.Context, request *models.LoginRequest) (*models.LoginResponse, error)
+	GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error)
 
-	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models2.Movie, error)
-	GetMovies(ctx context.Context, query string, page int) (*models2.GetMoviesResponse, error)
-	GetMovieDetail(ctx context.Context, id int) (*models2.GetMovieDetailResponse, error)
+	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models.Movie, error)
 }
 
 type business struct {
-	repo repository.Repository
-
+	repo        repository.Repository
 	tmdbAdapter adapter.TmdbAdapter
 }
 

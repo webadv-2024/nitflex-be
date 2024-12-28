@@ -8,12 +8,12 @@ import (
 	"github.com/spf13/cast"
 )
 
-func (h *Handler) GetMovieDetail(c *gin.Context) {
+func (h *Handler) GetCastInfo(c *gin.Context) {
 	var (
 		id = c.Param("id")
 	)
 
-	result, err := h.tmdb.GetMovieInfo(cast.ToInt(id), nil)
+	result, err := h.tmdb.GetPersonInfo(cast.ToInt(id), nil)
 	if err != nil {
 		c.JSON(http.StatusOK, util.FailResponse(err.Error()))
 		return

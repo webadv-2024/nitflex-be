@@ -2,7 +2,7 @@ package models
 
 type GoogleLoginRequest struct {
 	AccessToken string `json:"access_token" binding:"required"`
-} 
+}
 
 type GoogleUserInfo struct {
 	Email    string `json:"email"`
