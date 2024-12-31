@@ -46,6 +46,7 @@ func main() {
 	routes.GET("/casts/:id", h.GetCastInfo)
 	routes.GET("/reviews/:id", h.GetReviews)
 	routes.GET("/movies/popular", h.GetMoviePopular)
+	routes.GET("/movies/upcoming", h.GetMovieUpcoming)
 	routes.Run(":3000")
 }
 
