@@ -12,10 +12,33 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
+	_ "nitflex/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"nitflex/internal/handler"
 	"nitflex/internal/repository"
 )
 
+// @title           Nitflex API
+// @version         1.0
+// @description     A Netflix-like movie service API.
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+// @contact.email  support@swagger.io
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:3000
+// @BasePath  /
+
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -33,6 +56,9 @@ func main() {
 
 	// Add CORS middleware
 	routes.Use(corsMiddleware())
+
+	// Add Swagger endpoint
+	routes.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	routes.POST("/register", h.Register)
 	routes.POST("/login", h.Login)

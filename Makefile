@@ -1,5 +1,14 @@
+.PHONY: swagger
+swagger:
+	swag init -g cmd/main.go -o ./docs
+
+.PHONY: run
 run:
-	go run cmd/*
+	go run cmd/main.go
+
+.PHONY: build
+build:
+	go build -o bin/app cmd/main.go
 
 migrate-up:
 	 migrate -path db/migration/ -database "mysql://root:123456@tcp(localhost:3343)/nitflex" -verbose up
