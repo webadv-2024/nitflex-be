@@ -3,6 +3,7 @@ package business
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 
 	adapter "nitflex/internal/adapter/tmdb"
@@ -23,9 +24,9 @@ type business struct {
 	tmdbAdapter adapter.TmdbAdapter
 }
 
-func NewBusiness(gormDb *gorm.DB, tmdbAdapter adapter.TmdbAdapter) Business {
+func NewBusiness(gormDb *gorm.DB, mongodb *mongo.Database, tmdbAdapter adapter.TmdbAdapter) Business {
 	return &business{
-		repo:        repository.NewRepository(gormDb),
+		repo:        repository.NewRepository(gormDb, mongodb),
 		tmdbAdapter: tmdbAdapter,
 	}
 }

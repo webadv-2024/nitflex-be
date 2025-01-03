@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 )
 
@@ -15,10 +16,12 @@ type Repository interface {
 
 type repository struct {
 	*gorm.DB
+	mongodb *mongo.Database
 }
 
-func NewRepository(db *gorm.DB) Repository {
+func NewRepository(db *gorm.DB, mongodb *mongo.Database) Repository {
 	return &repository{
-		DB: db,
+		DB:      db,
+		mongodb: mongodb,
 	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/url"
@@ -9,6 +10,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
@@ -22,12 +25,18 @@ func main() {
 		fmt.Println("Error loading .env file")
 	}
 
-	db, err := initDb()
+	mongoClient, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb+srv://khanghocvatly:4dyrOvKfafiGmx8U@cluster0.68ts0.mongodb.net/"))
 	if err != nil {
-		panic("failed to connect to database")
+		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
+	defer func() {
+		if err = mongoClient.Disconnect(context.Background()); err != nil {
+			panic(err)
+		}
+	}()
 
-	h := handler.NewHandler(db)
+	mongodb := mongoClient.Database("nitflex")
+	h := handler.NewHandler(nil, mongodb)
 
 	routes := gin.Default()
 

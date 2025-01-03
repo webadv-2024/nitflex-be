@@ -4,25 +4,24 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type JwtClaims struct {
-	Id       int64  `json:"id"`
+	Id       string `json:"id"`
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
 
 // GenerateToken generate token
-func GenerateToken(userID int64, username string, expiredTime time.Time) (string, error) {
+func GenerateToken(userID string, username string, expiredTime time.Time) (string, error) {
 	jwtClaims := &JwtClaims{
 		Id:       userID,
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    strconv.FormatInt(userID, 10),
+			Issuer:    userID,
 			ExpiresAt: jwt.NewNumericDate(expiredTime),
 		},
 	}
@@ -52,15 +51,15 @@ func ParseToken(tokenString string) (*JwtClaims, error) {
 	return claims, nil
 }
 
-func Verify(context context.Context, tokenString string) (int64, error) {
+func Verify(context context.Context, tokenString string) (string, error) {
 	claims, err := ParseToken(tokenString)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	expiredTime := claims.ExpiresAt.Time
 
 	if isExpired := time.Now().After(expiredTime); isExpired {
-		return 0, nil
+		return "", nil
 	}
 	return claims.Id, nil
 }
