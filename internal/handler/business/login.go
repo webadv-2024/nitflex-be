@@ -2,7 +2,6 @@ package business
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"time"
 
@@ -10,6 +9,8 @@ import (
 	"nitflex/internal/models"
 	"nitflex/internal/repository"
 	"nitflex/util"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func (b *business) Login(ctx context.Context, request *models.LoginRequest) (*models.LoginResponse, error) {
@@ -19,10 +20,11 @@ func (b *business) Login(ctx context.Context, request *models.LoginRequest) (*mo
 	)
 
 	user, err = b.repo.GetUserByUsername(ctx, request.Username)
-	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+	if err != nil && !errors.Is(err, mongo.ErrNoDocuments) {
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
 	}
-	if err != nil && errors.Is(err, sql.ErrNoRows) {
+
+	if err != nil && errors.Is(err, mongo.ErrNoDocuments) {
 		return nil, util.NewError(constant.ErrorMessage_InvalidUsernameOrPassword)
 	}
 

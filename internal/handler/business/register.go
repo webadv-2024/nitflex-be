@@ -3,8 +3,9 @@ package business
 import (
 	"context"
 	"errors"
+	"fmt"
 
-	"gorm.io/gorm"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"nitflex/constant"
 	"nitflex/internal/models"
@@ -15,7 +16,7 @@ import (
 func (b *business) Register(ctx context.Context, request *models.RegisterRequest) error {
 	// check username existed
 	_, err := b.repo.GetUserByUsername(ctx, request.Username)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, mongo.ErrNoDocuments) {
 		return util.NewError(constant.ErrorMessage_InternalServerError)
 	}
 	if err == nil {
@@ -24,7 +25,7 @@ func (b *business) Register(ctx context.Context, request *models.RegisterRequest
 
 	// check email existed
 	_, err = b.repo.GetUserByEmail(ctx, request.Email)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, mongo.ErrNoDocuments) {
 		return util.NewError(constant.ErrorMessage_InternalServerError)
 	}
 	if err == nil {
@@ -43,6 +44,10 @@ func (b *business) Register(ctx context.Context, request *models.RegisterRequest
 		Email:    request.Email,
 		Password: hashedPassword,
 	})
+
+	if err != nil {
+		fmt.Println("-->", err)
+	}
 
 	return err
 }
