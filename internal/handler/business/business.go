@@ -20,6 +20,11 @@ type Business interface {
 	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error)
 	GetWatchlist(ctx context.Context, userID string) (*models.GetWatchlistResponse, error)
 	RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error)
+
+	// Favorite list methods
+	UpdateFavoriteList(ctx context.Context, userID string, movieID string) (*models.UpdateFavoriteListResponse, error)
+	GetFavoriteList(ctx context.Context, userID string) (*models.GetFavoriteListResponse, error)
+	RemoveFromFavoriteList(ctx context.Context, userID string, movieID string) (*models.UpdateFavoriteListResponse, error)
 }
 
 type business struct {

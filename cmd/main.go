@@ -63,6 +63,12 @@ func main() {
 	routes.POST("/watchlist/", middleware.AuthMiddleware(), h.PostWatchlist)
 	routes.GET("/watchlist/", middleware.AuthMiddleware(), h.GetWatchlist)
 	routes.DELETE("/watchlist/", middleware.AuthMiddleware(), h.DeleteWatchlist)
+	
+	// Add favorite list routes
+	routes.POST("/favorite/", middleware.AuthMiddleware(), h.PostFavoriteList)
+	routes.GET("/favorite/", middleware.AuthMiddleware(), h.GetFavoriteList)
+	routes.DELETE("/favorite/", middleware.AuthMiddleware(), h.DeleteFavoriteList)
+	
 	routes.Run(":3000")
 }
 

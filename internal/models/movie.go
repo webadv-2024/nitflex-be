@@ -32,3 +32,11 @@ type UpdateWatchlistResponse struct {
 type GetWatchlistResponse struct {
 	Results []*Movie `json:"results"`
 }
+
+type UpdateFavoriteListResponse struct {
+	Message string `json:"message"`
+}
+
+type GetFavoriteListResponse struct {
+	Results []*Movie `json:"results"`
+} 
