@@ -3,6 +3,7 @@ package business
 import (
 	"context"
 	"errors"
+	"strconv"
 	"time"
 
 	"nitflex/constant"
@@ -83,4 +84,27 @@ func (b *business) GetWatchlist(ctx context.Context, userID string) (*models.Get
 	return &models.GetWatchlistResponse{
 		Results: results,
 	}, nil
+}
+
+func (b *business) RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error) {
+	user, err := b.repo.GetUserByID(ctx, userID)
+	if err != nil {
+		return nil, util.NewError(constant.ErrorMessage_NotFound)
+	}
+
+	movieIDInt, err := strconv.Atoi(movieID)
+	if err != nil {
+		return nil, util.NewError(constant.ErrorMessage_BadRequest)
+	}
+	user.Watchlist = util.RemoveElement(user.Watchlist, movieIDInt)
+
+	err = b.repo.UpdateUser(ctx, user)
+	if err != nil {
+		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
+	}
+
+	return &models.UpdateWatchlistResponse{
+		Message: "Movie removed from watchlist",
+	}, nil
+
 }

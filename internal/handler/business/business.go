@@ -19,6 +19,7 @@ type Business interface {
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models.Movie, error)
 	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error)
 	GetWatchlist(ctx context.Context, userID string) (*models.GetWatchlistResponse, error)
+	RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error)
 }
 
 type business struct {

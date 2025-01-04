@@ -62,6 +62,7 @@ func main() {
 	// Add the middleware to protected routes
 	routes.POST("/watchlist/", middleware.AuthMiddleware(), h.PostWatchlist)
 	routes.GET("/watchlist/", middleware.AuthMiddleware(), h.GetWatchlist)
+	routes.DELETE("/watchlist/", middleware.AuthMiddleware(), h.DeleteWatchlist)
 	routes.Run(":3000")
 }
 
