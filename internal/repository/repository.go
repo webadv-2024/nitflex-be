@@ -15,6 +15,7 @@ type Repository interface {
 	UpdateRefreshToken(ctx context.Context, params *UpdateRefreshTokenParams) error
 	UpdateUser(ctx context.Context, user *User) error
 	GetMovieByID(ctx context.Context, movieID string) (*Movie, error)
+	GetMoviesList(ctx context.Context, movieIDs []int) ([]*Movie, error)
 }
 
 type repository struct {

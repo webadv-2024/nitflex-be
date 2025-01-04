@@ -53,3 +53,34 @@ func (b *business) UpdateWatchlist(ctx context.Context, userID string, movieID s
 		Message: "Movie added to watchlist",
 	}, nil
 }
+
+func (b *business) GetWatchlist(ctx context.Context, userID string) (*models.GetWatchlistResponse, error) {
+	user, err := b.repo.GetUserByID(ctx, userID)
+	if err != nil {
+		return nil, util.NewError(constant.ErrorMessage_NotFound)
+	}
+
+	// Get all movies in one database call
+	movies, err := b.repo.GetMoviesList(ctx, user.Watchlist)
+	if err != nil {
+		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
+	}
+
+	results := make([]*models.Movie, len(movies))
+	for i, movie := range movies {
+		results[i] = &models.Movie{
+			Id:            movie.TmdbId,
+			Title:         movie.Title,
+			OriginalTitle: movie.OriginalTitle,
+			Overview:      movie.Overview,
+			PosterPath:    movie.PosterPath,
+			ReleaseDate:   movie.ReleaseDate,
+			VoteAverage:   movie.VoteAverage,
+			VoteCount:     movie.VoteCount,
+		}
+	}
+
+	return &models.GetWatchlistResponse{
+		Results: results,
+	}, nil
+}

@@ -28,3 +28,7 @@ type GetMoviesResponse struct {
 type UpdateWatchlistResponse struct {
 	Message string `json:"message"`
 }
+
+type GetWatchlistResponse struct {
+	Results []*Movie `json:"results"`
+}
