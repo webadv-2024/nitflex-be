@@ -25,7 +25,8 @@ func main() {
 		fmt.Println("Error loading .env file")
 	}
 
-	mongoClient, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb+srv://khanghocvatly:4dyrOvKfafiGmx8U@cluster0.68ts0.mongodb.net/"))
+	mongoURI := os.Getenv("MONGO_URI")
+	mongoClient, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		log.Fatalf("Failed to connect to MongoDB: %v", err)
 	}
