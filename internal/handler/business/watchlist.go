@@ -3,7 +3,6 @@ package business
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"nitflex/constant"
@@ -29,13 +28,20 @@ func (b *business) UpdateWatchlist(ctx context.Context, userID string, movieID s
 	}
 
 	movie, err := b.repo.GetMovieByID(ctx, movieID)
-
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
 	}
 
+	// Check if movie is already in watchlist
+	for _, id := range user.Watchlist {
+		if id == movie.TmdbId {
+			return &models.UpdateWatchlistResponse{
+				Message: "Movie already in watchlist",
+			}, nil
+		}
+	}
+
 	user.Watchlist = append(user.Watchlist, movie.TmdbId)
-	fmt.Println("//////")
 	user.UpdatedAt = time.Now()
 
 	err = b.repo.UpdateUser(ctx, user)

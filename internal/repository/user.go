@@ -75,8 +75,33 @@ func (r *repository) UpdateRefreshToken(ctx context.Context, params *UpdateRefre
 }
 
 func (r *repository) UpdateUser(ctx context.Context, user *User) error {
+	// Convert string ID to ObjectID
+	objectID, err := primitive.ObjectIDFromHex(user.Id)
+	if err != nil {
+		return fmt.Errorf("invalid user ID format: %w", err)
+	}
+
+	// Prepare the fields to update (exclude the ID field)
+	update := bson.M{
+		"$set": bson.M{
+			"username":     user.Username,
+			"email":        user.Email,
+			"password":     user.Password,
+			"updated_at":   user.UpdatedAt, // Ensure you set this to the current timestamp before calling the function
+			"watchlist":    user.Watchlist,
+			"favorite_list": user.FavoriteList,
+		},
+	}
+
+	// Access the collection
 	collection := r.mongodb.Collection(User{}.TableName())
-	fmt.Println(user)
-	_, err := collection.UpdateOne(ctx, bson.M{"_id": user.Id}, bson.M{"$set": user})
-	return err
+
+	// Perform the update
+	_, err = collection.UpdateOne(ctx, bson.M{"_id": objectID}, update)
+	if err != nil {
+		return fmt.Errorf("failed to update user: %w", err)
+	}
+
+	return nil
 }
+
