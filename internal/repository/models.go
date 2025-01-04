@@ -13,8 +13,8 @@ type User struct {
 	RefreshTokenExpiresAt *time.Time `bson:"refresh_token_expires_at,omitempty"`
 	CreatedAt             time.Time  `bson:"created_at"`
 	UpdatedAt             time.Time  `bson:"updated_at"`
-	Watchlist             []int   `bson:"watchlist,omitempty"`
-	FavoriteList          []int   `bson:"favorite_list,omitempty"` 
+	Watchlist             []int   	 `bson:"watchlist,omitempty"`
+	FavoriteList          []int      `bson:"favorite_list,omitempty"` 
 }
 
 func (User) TableName() string { return "users" }

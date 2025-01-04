@@ -3,6 +3,7 @@ package business
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"nitflex/constant"
@@ -32,8 +33,9 @@ func (b *business) UpdateWatchlist(ctx context.Context, userID string, movieID s
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
 	}
-	user.Watchlist = append(user.Watchlist, movie.TmdbId)
 
+	user.Watchlist = append(user.Watchlist, movie.TmdbId)
+	fmt.Println("//////")
 	user.UpdatedAt = time.Now()
 
 	err = b.repo.UpdateUser(ctx, user)
