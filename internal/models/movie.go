@@ -24,3 +24,7 @@ type GetMoviesResponse struct {
 	TotalPages   int      `json:"total_pages"`
 	TotalResults int      `json:"total_results"`
 }
+
+type UpdateWatchlistResponse struct {
+	Message string `json:"message"`
+}

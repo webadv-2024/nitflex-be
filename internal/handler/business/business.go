@@ -17,6 +17,7 @@ type Business interface {
 	GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error)
 
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models.Movie, error)
+	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error)
 }
 
 type business struct {

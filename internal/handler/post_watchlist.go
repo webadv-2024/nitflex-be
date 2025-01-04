@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
+	"nitflex/constant"
 	"nitflex/util"
 
 	"github.com/gin-gonic/gin"
@@ -28,11 +30,16 @@ func (h *Handler) PostWatchlist(c *gin.Context) {
 		return
 	}
 
-	// TODO: Save movie to user's watchlist in database
-	// You'll need to implement this functionality in your business layer
+	response, err := h.biz.UpdateWatchlist(c.Request.Context(), userID, req.MovieID)
+	if err != nil {
+		if errors.Is(err, util.NewError(constant.ErrorMessage_NotFound)) {
+			c.JSON(http.StatusNotFound, util.FailResponse(err.Error()))
+			return
+		}
 
-	c.JSON(http.StatusOK, util.SuccessResponse(map[string]string{
-		"user_id":  userID,
-		"movie_id": req.MovieID,
-	}))
+		c.JSON(http.StatusInternalServerError, util.FailResponse(constant.ErrorMessage_InternalServerError))
+		return
+	}
+
+	c.JSON(http.StatusOK, util.SuccessResponse(response))
 }
