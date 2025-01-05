@@ -15,21 +15,16 @@ type FavoriteListRequest struct {
 
 func (h *Handler) PostFavoriteList(c *gin.Context) {
 	var (
-		userID = c.GetString("user_id")
+		user = c.MustGet("user").(*util.JwtClaims)
 		req    FavoriteListRequest
 	)
-
-	if userID == "" {
-		c.JSON(http.StatusUnauthorized, util.FailResponse("unauthorized"))
-		return
-	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, util.FailResponse(err.Error()))
 		return
 	}
 
-	response, err := h.biz.UpdateFavoriteList(c.Request.Context(), userID, req.MovieID)
+	response, err := h.biz.UpdateFavoriteList(c.Request.Context(), user.Id, req.MovieID)
 	if err != nil {
 		if errors.Is(err, util.NewError(constant.ErrorMessage_NotFound)) {
 			c.JSON(http.StatusNotFound, util.FailResponse(err.Error()))

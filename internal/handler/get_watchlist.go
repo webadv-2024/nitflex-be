@@ -11,15 +11,10 @@ import (
 
 func (h *Handler) GetWatchlist(c *gin.Context) {
 	var (
-		userID = c.GetString("user_id")
+		user = c.MustGet("user").(*util.JwtClaims)
 	)
 
-	if userID == "" {
-		c.JSON(http.StatusUnauthorized, util.FailResponse("unauthorized"))
-		return
-	}
-
-	response, err := h.biz.GetWatchlist(c.Request.Context(), userID)
+	response, err := h.biz.GetWatchlist(c.Request.Context(), user.Id)
 	if err != nil {
 		if errors.Is(err, util.NewError(constant.ErrorMessage_NotFound)) {
 			c.JSON(http.StatusNotFound, util.FailResponse(err.Error()))
