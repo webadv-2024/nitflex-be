@@ -8,6 +8,27 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+func (r *repository) GetRatingUser(ctx context.Context, userID string) ([]*Rating, error) {
+	// Find all ratings for the user
+	var ratings []*Rating
+	filter := bson.M{"user_id": userID}
+	
+	cursor, err := r.mongodb.Collection("ratings").Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	if err = cursor.All(ctx, &ratings); err != nil {
+		return nil, err
+	}
+
+	if len(ratings) == 0 {
+		return make([]*Rating, 0), nil // Return empty slice if no ratings found
+	}
+	return ratings, nil
+}
+
 func (r *repository) CreateRating(ctx context.Context, userID string, movieID string, rating int) (*Rating, error) {
 	// Validate rating range
 	if rating < 1 || rating > 10 {

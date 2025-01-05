@@ -71,7 +71,7 @@ func main() {
 
 	// Add rating routes
 	routes.POST("/ratings/", middleware.AuthMiddleware(), h.PostRating)
-
+	routes.GET("/ratings/", middleware.AuthMiddleware(), h.GetRatingUser)
 	routes.Run(":3000")
 }
 

@@ -30,6 +30,7 @@ type Business interface {
 
 	// Rating methods
 	UpdateRating(ctx context.Context, userID string, movieID string, rating int) (*models.TextResponse, error)
+	GetRatingUser(ctx context.Context, userID string) (*models.RatingsResponse, error)
 }
 
 type business struct {

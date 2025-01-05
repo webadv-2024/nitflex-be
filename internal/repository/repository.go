@@ -14,9 +14,14 @@ type Repository interface {
 	CreateUser(ctx context.Context, user *User) error
 	UpdateRefreshToken(ctx context.Context, params *UpdateRefreshTokenParams) error
 	UpdateUser(ctx context.Context, user *User) error
+
+	// Movie methods
 	GetMovieByID(ctx context.Context, movieID string) (*Movie, error)
 	GetMoviesList(ctx context.Context, movieIDs []int) ([]*Movie, error)
+
+	// Rating methods
 	CreateRating(ctx context.Context, userID string, movieID string, rating int) (*Rating, error)
+	GetRatingUser(ctx context.Context, userID string) ([]*Rating, error)
 }
 
 type repository struct {

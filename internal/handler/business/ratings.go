@@ -15,3 +15,13 @@ func (b *business) UpdateRating(ctx context.Context, userID string, movieID stri
 		Message: "Rating updated successfully",
 	}, nil
 }
+
+func (b *business) GetRatingUser(ctx context.Context, userID string) (*models.RatingsResponse, error) {
+	rating, err := b.repo.GetRatingUser(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	return &models.RatingsResponse{
+		Results: rating,
+	}, nil
+}
