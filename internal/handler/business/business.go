@@ -17,6 +17,8 @@ type Business interface {
 	GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error)
 
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models.Movie, error)
+
+	// Watchlist methods
 	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
 	GetWatchlist(ctx context.Context, userID string) (*models.MovieListResponse, error)
 	RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
@@ -25,6 +27,9 @@ type Business interface {
 	UpdateFavoriteList(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
 	GetFavoriteList(ctx context.Context, userID string) (*models.MovieListResponse, error)
 	RemoveFromFavoriteList(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
+
+	// Rating methods
+	UpdateRating(ctx context.Context, userID string, movieID string, rating int) (*models.TextResponse, error)
 }
 
 type business struct {

@@ -16,6 +16,7 @@ type Repository interface {
 	UpdateUser(ctx context.Context, user *User) error
 	GetMovieByID(ctx context.Context, movieID string) (*Movie, error)
 	GetMoviesList(ctx context.Context, movieIDs []int) ([]*Movie, error)
+	CreateRating(ctx context.Context, userID string, movieID string, rating int) (*Rating, error)
 }
 
 type repository struct {

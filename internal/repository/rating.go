@@ -2,12 +2,18 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func (r *repository) CreateRating(ctx context.Context, userID string, movieID string, rating int) (*Rating, error) {
+	// Validate rating range
+	if rating < 1 || rating > 10 {
+		return nil, fmt.Errorf("rating must be between 1 and 10")
+	}
+
 	// Find existing rating
 	var existingRating Rating
 	filter := bson.M{"user_id": userID, "movie_id": movieID}

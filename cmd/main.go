@@ -68,7 +68,10 @@ func main() {
 	routes.POST("/favorite/", middleware.AuthMiddleware(), h.PostFavoriteList)
 	routes.GET("/favorite/", middleware.AuthMiddleware(), h.GetFavoriteList)
 	routes.DELETE("/favorite/", middleware.AuthMiddleware(), h.DeleteFavoriteList)
-	
+
+	// Add rating routes
+	routes.POST("/ratings/", middleware.AuthMiddleware(), h.PostRating)
+
 	routes.Run(":3000")
 }
 
