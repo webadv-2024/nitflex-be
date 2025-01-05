@@ -17,14 +17,14 @@ type Business interface {
 	GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error)
 
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models.Movie, error)
-	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error)
-	GetWatchlist(ctx context.Context, userID string) (*models.GetWatchlistResponse, error)
-	RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error)
+	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
+	GetWatchlist(ctx context.Context, userID string) (*models.MovieListResponse, error)
+	RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
 
 	// Favorite list methods
-	UpdateFavoriteList(ctx context.Context, userID string, movieID string) (*models.UpdateFavoriteListResponse, error)
-	GetFavoriteList(ctx context.Context, userID string) (*models.GetFavoriteListResponse, error)
-	RemoveFromFavoriteList(ctx context.Context, userID string, movieID string) (*models.UpdateFavoriteListResponse, error)
+	UpdateFavoriteList(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
+	GetFavoriteList(ctx context.Context, userID string) (*models.MovieListResponse, error)
+	RemoveFromFavoriteList(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
 }
 
 type business struct {

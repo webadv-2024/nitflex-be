@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func (b *business) UpdateFavoriteList(ctx context.Context, userID string, movieID string) (*models.UpdateFavoriteListResponse, error) {
+func (b *business) UpdateFavoriteList(ctx context.Context, userID string, movieID string) (*models.TextResponse, error) {
 	var (
 		user *repository.User
 		err  error
@@ -35,7 +35,7 @@ func (b *business) UpdateFavoriteList(ctx context.Context, userID string, movieI
 	// Check if movie is already in favorite list
 	for _, id := range user.FavoriteList {
 		if id == movie.TmdbId {
-			return &models.UpdateFavoriteListResponse{
+			return &models.TextResponse{
 				Message: "Movie already in favorite list",
 			}, nil
 		}
@@ -49,19 +49,19 @@ func (b *business) UpdateFavoriteList(ctx context.Context, userID string, movieI
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
 	}
 
-	return &models.UpdateFavoriteListResponse{
+	return &models.TextResponse{
 		Message: "Movie added to favorite list",
 	}, nil
 }
 
-func (b *business) GetFavoriteList(ctx context.Context, userID string) (*models.GetFavoriteListResponse, error) {
+func (b *business) GetFavoriteList(ctx context.Context, userID string) (*models.MovieListResponse, error) {
 	user, err := b.repo.GetUserByID(ctx, userID)
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
 	}
 
 	if len(user.FavoriteList) == 0 {
-		return &models.GetFavoriteListResponse{
+		return &models.MovieListResponse{
 			Results: []*models.Movie{},
 		}, nil
 	}
@@ -85,12 +85,12 @@ func (b *business) GetFavoriteList(ctx context.Context, userID string) (*models.
 		}
 	}
 
-	return &models.GetFavoriteListResponse{
+	return &models.MovieListResponse{
 		Results: results,
 	}, nil
 }
 
-func (b *business) RemoveFromFavoriteList(ctx context.Context, userID string, movieID string) (*models.UpdateFavoriteListResponse, error) {
+func (b *business) RemoveFromFavoriteList(ctx context.Context, userID string, movieID string) (*models.TextResponse, error) {
 	user, err := b.repo.GetUserByID(ctx, userID)
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
@@ -107,7 +107,7 @@ func (b *business) RemoveFromFavoriteList(ctx context.Context, userID string, mo
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
 	}
 
-	return &models.UpdateFavoriteListResponse{
+	return &models.TextResponse{
 		Message: "Movie removed from favorite list",
 	}, nil
 }

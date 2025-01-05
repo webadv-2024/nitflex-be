@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func (b *business) UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error) {
+func (b *business) UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error) {
 	var (
 		user *repository.User
 		err  error
@@ -36,7 +36,7 @@ func (b *business) UpdateWatchlist(ctx context.Context, userID string, movieID s
 	// Check if movie is already in watchlist
 	for _, id := range user.Watchlist {
 		if id == movie.TmdbId {
-			return &models.UpdateWatchlistResponse{
+			return &models.TextResponse{
 				Message: "Movie already in watchlist",
 			}, nil
 		}
@@ -50,19 +50,19 @@ func (b *business) UpdateWatchlist(ctx context.Context, userID string, movieID s
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
 	}
 
-	return &models.UpdateWatchlistResponse{
+	return &models.TextResponse{
 		Message: "Movie added to watchlist",
 	}, nil
 }
 
-func (b *business) GetWatchlist(ctx context.Context, userID string) (*models.GetWatchlistResponse, error) {
+func (b *business) GetWatchlist(ctx context.Context, userID string) (*models.MovieListResponse, error) {
 	user, err := b.repo.GetUserByID(ctx, userID)
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
 	}
 
 	if len(user.Watchlist) == 0 {
-		return &models.GetWatchlistResponse{
+		return &models.MovieListResponse{
 			Results: []*models.Movie{},
 		}, nil
 	}
@@ -87,12 +87,12 @@ func (b *business) GetWatchlist(ctx context.Context, userID string) (*models.Get
 		}
 	}
 
-	return &models.GetWatchlistResponse{
+	return &models.MovieListResponse{
 		Results: results,
 	}, nil
 }
 
-func (b *business) RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.UpdateWatchlistResponse, error) {
+func (b *business) RemoveFromWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error) {
 	user, err := b.repo.GetUserByID(ctx, userID)
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
@@ -109,7 +109,7 @@ func (b *business) RemoveFromWatchlist(ctx context.Context, userID string, movie
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
 	}
 
-	return &models.UpdateWatchlistResponse{
+	return &models.TextResponse{
 		Message: "Movie removed from watchlist",
 	}, nil
 

@@ -25,18 +25,10 @@ type GetMoviesResponse struct {
 	TotalResults int      `json:"total_results"`
 }
 
-type UpdateWatchlistResponse struct {
+type TextResponse struct {
 	Message string `json:"message"`
 }
 
-type GetWatchlistResponse struct {
+type MovieListResponse struct {
 	Results []*Movie `json:"results"`
 }
-
-type UpdateFavoriteListResponse struct {
-	Message string `json:"message"`
-}
-
-type GetFavoriteListResponse struct {
-	Results []*Movie `json:"results"`
-} 
