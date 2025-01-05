@@ -11,7 +11,6 @@ import (
 	"nitflex/internal/repository"
 	"nitflex/util"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -61,6 +60,12 @@ func (b *business) GetFavoriteList(ctx context.Context, userID string) (*models.
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
 	}
 
+	if len(user.FavoriteList) == 0 {
+		return &models.GetFavoriteListResponse{
+			Results: []*models.Movie{},
+		}, nil
+	}
+
 	movies, err := b.repo.GetMoviesList(ctx, user.FavoriteList)
 	if err != nil {
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
@@ -105,34 +110,4 @@ func (b *business) RemoveFromFavoriteList(ctx context.Context, userID string, mo
 	return &models.UpdateFavoriteListResponse{
 		Message: "Movie removed from favorite list",
 	}, nil
-}
-
-func GetFavoriteList(db *mongo.Database, userID string) ([]map[string]interface{}, error) {
-	collection := db.Collection("favorite_list")
-	
-	filter := bson.M{"user_id": userID}
-	cursor, err := collection.Find(context.Background(), filter)
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(context.Background())
-
-	var results []map[string]interface{}
-	if err = cursor.All(context.Background(), &results); err != nil {
-		return nil, err
-	}
-
-	return results, nil
-}
-
-func DeleteFavoriteList(db *mongo.Database, userID string, movieID string) error {
-	collection := db.Collection("favorite_list")
-	
-	filter := bson.M{
-		"user_id": userID,
-		"movie_id": movieID,
-	}
-	
-	_, err := collection.DeleteOne(context.Background(), filter)
-	return err
 }

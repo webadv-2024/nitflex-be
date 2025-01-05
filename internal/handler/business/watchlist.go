@@ -61,6 +61,12 @@ func (b *business) GetWatchlist(ctx context.Context, userID string) (*models.Get
 		return nil, util.NewError(constant.ErrorMessage_NotFound)
 	}
 
+	if len(user.Watchlist) == 0 {
+		return &models.GetWatchlistResponse{
+			Results: []*models.Movie{},
+		}, nil
+	}
+
 	// Get all movies in one database call
 	movies, err := b.repo.GetMoviesList(ctx, user.Watchlist)
 	if err != nil {
