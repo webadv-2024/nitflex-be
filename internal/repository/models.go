@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+///////// USERS /////////
 type User struct {
 	Id                    string     `bson:"_id,omitempty"`
 	Username              string     `bson:"username"`
@@ -19,6 +20,7 @@ type User struct {
 
 func (User) TableName() string { return "users" }
 
+///////// MOVIES /////////
 type Movie struct {
 	Id                    string    `bson:"_id,omitempty"`
 	TmdbId               int       `bson:"tmdb_id"`
@@ -94,4 +96,11 @@ type Cast struct {
 	Character          string  `bson:"character"`
 	CreditId           string  `bson:"credit_id"`
 	Order              int     `bson:"order"`
+}
+
+///////// RATINGS /////////
+type Rating struct {
+	UserId string `bson:"user_id"`
+	MovieId string `bson:"movie_id"`
+	Rating int    `bson:"rating"`
 }
