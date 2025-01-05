@@ -24,3 +24,11 @@ type GetMoviesResponse struct {
 	TotalPages   int      `json:"total_pages"`
 	TotalResults int      `json:"total_results"`
 }
+
+type TextResponse struct {
+	Message string `json:"message"`
+}
+
+type MovieListResponse struct {
+	Results []*Movie `json:"results"`
+}

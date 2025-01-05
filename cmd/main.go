@@ -16,6 +16,7 @@ import (
 	"gorm.io/gorm"
 
 	"nitflex/internal/handler"
+	"nitflex/internal/middleware"
 	"nitflex/internal/repository"
 )
 
@@ -57,6 +58,20 @@ func main() {
 	routes.GET("/reviews/:id", h.GetReviews)
 	routes.GET("/movies/popular", h.GetMoviePopular)
 	routes.GET("/movies/upcoming", h.GetMovieUpcoming)
+
+	// Add the middleware to protected routes
+	routes.POST("/watchlist/", middleware.AuthMiddleware(), h.PostWatchlist)
+	routes.GET("/watchlist/", middleware.AuthMiddleware(), h.GetWatchlist)
+	routes.DELETE("/watchlist/", middleware.AuthMiddleware(), h.DeleteWatchlist)
+	
+	// Add favorite list routes
+	routes.POST("/favorite/", middleware.AuthMiddleware(), h.PostFavoriteList)
+	routes.GET("/favorite/", middleware.AuthMiddleware(), h.GetFavoriteList)
+	routes.DELETE("/favorite/", middleware.AuthMiddleware(), h.DeleteFavoriteList)
+
+	// Add rating routes
+	routes.POST("/ratings/", middleware.AuthMiddleware(), h.PostRating)
+	routes.GET("/ratings/", middleware.AuthMiddleware(), h.GetRatingUser)
 	routes.Run(":3000")
 }
 

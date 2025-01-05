@@ -2,6 +2,7 @@ package util
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -51,15 +52,15 @@ func ParseToken(tokenString string) (*JwtClaims, error) {
 	return claims, nil
 }
 
-func Verify(context context.Context, tokenString string) (string, error) {
+func Verify(context context.Context, tokenString string) (*JwtClaims, error) {
 	claims, err := ParseToken(tokenString)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	expiredTime := claims.ExpiresAt.Time
 
 	if isExpired := time.Now().After(expiredTime); isExpired {
-		return "", nil
+		return nil, errors.New("token expired")
 	}
-	return claims.Id, nil
+	return claims, nil
 }
