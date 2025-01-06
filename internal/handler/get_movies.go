@@ -1,10 +1,14 @@
 package handler
 
 import (
+	"context"
 	"net/http"
-	"nitflex/util"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
+
+	"nitflex/internal/repository"
+	"nitflex/util"
 )
 
 func (h *Handler) GetMovies(c *gin.Context) {
@@ -16,39 +20,25 @@ func (h *Handler) GetMovies(c *gin.Context) {
 		from_date  = c.Query("release_date_gte") //YYYY-MM-DD
 		to_date    = c.Query("release_date_lte") //YYYY-MM-DD
 		actors     = c.Query("actors")
-		page       = c.Query("page")
+		// page       = c.Query("page")
 	)
 
 	var (
-		result any
+		result = []*repository.Movie{}
 		err    error
+		ctx    = context.Background()
 	)
 
-	if page == "" {
-		page = "1"
-	}
-
-	if min_rating == "" {
-		min_rating = "0"
-	}
-
-	if max_rating == "" {
-		max_rating = "10"
-	}
-
 	if query != "" {
-		result, err = h.tmdb.SearchMovie(query, map[string]string{
-			"page": page,
-		})
+		result, err = h.biz.SearchMovies(ctx, query)
 	} else {
-		result, err = h.tmdb.DiscoverMovie(map[string]string{
-			"with_genres":              genres,
-			"vote_average.gte":         min_rating,
-			"vote_average.lte":         max_rating,
-			"primary_release_date.gte": from_date,
-			"primary_release_date.lte": to_date,
-			"with_cast":                actors,
-			"page":                     page,
+		result, err = h.biz.FilterMovies(ctx, &repository.FilterMoviesParams{
+			Genres:         genres,
+			MinRating:      cast.ToFloat64(min_rating),
+			MaxRating:      cast.ToFloat64(max_rating),
+			ReleaseDateGte: from_date,
+			ReleaseDateLte: to_date,
+			Actors:         actors,
 		})
 	}
 
@@ -57,9 +47,5 @@ func (h *Handler) GetMovies(c *gin.Context) {
 		return
 	}
 
-	// response.PosterPath = "https://image.tmdb.org/t/p/w500" + response.PosterPath
-	// response.BackdropPath = "https://image.tmdb.org/t/p/w500" + response.BackdropPath
-
-	// response client
 	c.JSON(http.StatusOK, util.SuccessResponse(result))
 }

@@ -12,7 +12,7 @@ import (
 func (h *Handler) DeleteFavoriteList(c *gin.Context) {
 	var (
 		user = c.MustGet("user").(*util.JwtClaims)
-		req    FavoriteListRequest
+		req  FavoriteListRequest
 	)
 
 	if err := c.ShouldBindJSON(&req); err != nil {

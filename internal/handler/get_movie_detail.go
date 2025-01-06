@@ -13,7 +13,7 @@ func (h *Handler) GetMovieDetail(c *gin.Context) {
 		id = c.Param("id")
 	)
 
-	result, err := h.tmdb.GetMovieInfo(cast.ToInt(id), nil)
+	result, err := h.biz.GetMovieDetail(c.Request.Context(), cast.ToString(id))
 	if err != nil {
 		c.JSON(http.StatusOK, util.FailResponse(err.Error()))
 		return

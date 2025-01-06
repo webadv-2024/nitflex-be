@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-///////// USERS /////////
+// /////// USERS /////////
 type User struct {
 	Id                    string     `bson:"_id,omitempty"`
 	Username              string     `bson:"username"`
@@ -14,43 +14,43 @@ type User struct {
 	RefreshTokenExpiresAt *time.Time `bson:"refresh_token_expires_at,omitempty"`
 	CreatedAt             time.Time  `bson:"created_at"`
 	UpdatedAt             time.Time  `bson:"updated_at"`
-	Watchlist             []int   	 `bson:"watchlist,omitempty"`
-	FavoriteList          []int      `bson:"favorite_list,omitempty"` 
+	Watchlist             []int      `bson:"watchlist,omitempty"`
+	FavoriteList          []int      `bson:"favorite_list,omitempty"`
 }
 
 func (User) TableName() string { return "users" }
 
-///////// MOVIES /////////
+// /////// MOVIES /////////
 type Movie struct {
-	Id                    string    `bson:"_id,omitempty"`
-	TmdbId               int       `bson:"tmdb_id"`
-	Adult                bool      `bson:"adult"`
-	BackdropPath         string    `bson:"backdrop_path"`
-	BelongsToCollection  any       `bson:"belongs_to_collection"`
-	Budget               int       `bson:"budget"`
-	Categories           []string  `bson:"categories"`
-	Genres               []Genre   `bson:"genres"`
-	Homepage            string    `bson:"homepage"`
-	ImdbId              string    `bson:"imdb_id"`
-	OriginCountry       []string  `bson:"origin_country"`
-	OriginalLanguage    string    `bson:"original_language"`
-	OriginalTitle       string    `bson:"original_title"`
-	Overview            string    `bson:"overview"`
-	Popularity          float64   `bson:"popularity"`
-	PosterPath          string    `bson:"poster_path"`
-	ProductionCompanies []Company `bson:"production_companies"`
-	ProductionCountries []Country `bson:"production_countries"`
-	ReleaseDate         string    `bson:"release_date"`
-	Revenue             int       `bson:"revenue"`
-	Runtime             int       `bson:"runtime"`
+	Id                  string     `bson:"_id,omitempty"`
+	TmdbId              int        `bson:"tmdb_id"`
+	Adult               bool       `bson:"adult"`
+	BackdropPath        string     `bson:"backdrop_path"`
+	BelongsToCollection any        `bson:"belongs_to_collection"`
+	Budget              int        `bson:"budget"`
+	Categories          []string   `bson:"categories"`
+	Genres              []Genre    `bson:"genres"`
+	Homepage            string     `bson:"homepage"`
+	ImdbId              string     `bson:"imdb_id"`
+	OriginCountry       []string   `bson:"origin_country"`
+	OriginalLanguage    string     `bson:"original_language"`
+	OriginalTitle       string     `bson:"original_title"`
+	Overview            string     `bson:"overview"`
+	Popularity          float64    `bson:"popularity"`
+	PosterPath          string     `bson:"poster_path"`
+	ProductionCompanies []Company  `bson:"production_companies"`
+	ProductionCountries []Country  `bson:"production_countries"`
+	ReleaseDate         string     `bson:"release_date"`
+	Revenue             int        `bson:"revenue"`
+	Runtime             int        `bson:"runtime"`
 	SpokenLanguages     []Language `bson:"spoken_languages"`
-	Status              string    `bson:"status"`
-	Tagline             string    `bson:"tagline"`
-	Title               string    `bson:"title"`
-	Video               bool      `bson:"video"`
-	VoteAverage         float64   `bson:"vote_average"`
-	VoteCount           int       `bson:"vote_count"`
-	Credits             Credits   `bson:"credits"`
+	Status              string     `bson:"status"`
+	Tagline             string     `bson:"tagline"`
+	Title               string     `bson:"title"`
+	Video               bool       `bson:"video"`
+	VoteAverage         float64    `bson:"vote_average"`
+	VoteCount           int        `bson:"vote_count"`
+	Credits             Credits    `bson:"credits"`
 }
 
 func (Movie) TableName() string { return "movies" }
@@ -61,9 +61,9 @@ type Genre struct {
 }
 
 type Company struct {
-	Id           int    `bson:"id"`
-	LogoPath     string `bson:"logo_path"`
-	Name         string `bson:"name"`
+	Id            int    `bson:"id"`
+	LogoPath      string `bson:"logo_path"`
+	Name          string `bson:"name"`
 	OriginCountry string `bson:"origin_country"`
 }
 
@@ -98,9 +98,9 @@ type Cast struct {
 	Order              int     `bson:"order"`
 }
 
-///////// RATINGS /////////
+// /////// RATINGS /////////
 type Rating struct {
-	UserId string `bson:"user_id"`
+	UserId  string `bson:"user_id"`
 	MovieId string `bson:"movie_id"`
-	Rating int    `bson:"rating"`
+	Rating  int    `bson:"rating"`
 }

@@ -2,27 +2,30 @@ package business
 
 import (
 	"context"
-	"nitflex/util"
 
 	"nitflex/constant"
-
-	"nitflex/internal/models"
+	"nitflex/internal/repository"
 )
 
-func (b *business) GetTrendingMovies(ctx context.Context, timeWindow string) ([]*models.Movie, error) {
-	if timeWindow != constant.TrendingMovies_TimeWindow_Day && timeWindow != constant.TrendingMovies_TimeWindow_Week {
-		timeWindow = constant.TrendingMovies_TimeWindow_Day
-	}
+func (b *business) GetTrendingMovies(ctx context.Context, timeWindow string) ([]*repository.Movie, error) {
+	var (
+		result = []*repository.Movie{}
+		err    error
+	)
 
-	response, err := b.tmdbAdapter.GetTrendingMovies(ctx, timeWindow)
+	if timeWindow == constant.TrendingMovies_TimeWindow_Week {
+
+	} else {
+		result, err = b.repo.GetTrendingMoviesInDay(ctx)
+	}
 	if err != nil {
-		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
+		return nil, err
 	}
 
-	for _, movie := range response.Results {
+	for _, movie := range result {
 		movie.PosterPath = "https://image.tmdb.org/t/p/w500" + movie.PosterPath
 		movie.BackdropPath = "https://image.tmdb.org/t/p/w500" + movie.BackdropPath
 	}
 
-	return response.Results, nil
+	return result, nil
 }

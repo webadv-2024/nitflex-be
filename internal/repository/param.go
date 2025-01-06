@@ -7,3 +7,12 @@ type UpdateRefreshTokenParams struct {
 	RefreshToken          string
 	RefreshTokenExpiresAt time.Time
 }
+
+type FilterMoviesParams struct {
+	Genres         string
+	MinRating      float64
+	MaxRating      float64
+	ReleaseDateGte string
+	ReleaseDateLte string
+	Actors         string
+}
