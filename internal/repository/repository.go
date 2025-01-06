@@ -25,6 +25,9 @@ type Repository interface {
 	// Rating methods
 	CreateRating(ctx context.Context, userID string, movieID string, rating int) (*Rating, error)
 	GetRatingUser(ctx context.Context, userID string) ([]*Rating, error)
+
+	// Cast
+	GetCastByID(ctx context.Context, tmdb_id int32) (*CastInfo, error)
 }
 
 type repository struct {

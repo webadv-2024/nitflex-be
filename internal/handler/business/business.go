@@ -16,10 +16,14 @@ type Business interface {
 	Login(ctx context.Context, request *models.LoginRequest) (*models.LoginResponse, error)
 	GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error)
 
+	// Movies
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*repository.Movie, error)
 	SearchMovies(ctx context.Context, query string) ([]*repository.Movie, error)
 	FilterMovies(ctx context.Context, params *repository.FilterMoviesParams) ([]*repository.Movie, error)
 	GetMovieDetail(ctx context.Context, id string) (*repository.Movie, error)
+
+	// Cast
+	GetCastDetail(ctx context.Context, tmdbid int32) (*repository.CastInfo, error)
 
 	// Watchlist methods
 	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)

@@ -104,3 +104,29 @@ type Rating struct {
 	MovieId string `bson:"movie_id"`
 	Rating  int    `bson:"rating"`
 }
+
+// /////// CAST /////////
+type CastInfo struct {
+	Id           string      `bson:"_id"`
+	TmdbId       int32       `bson:"tmdb_id"`
+	Birthday     string      `bson:"birthday"`
+	DeathDay     string      `bson:"deathday"`
+	Name         string      `bson:"name"`
+	PlaceOfBirth string      `bson:"place_of_birth"`
+	Popularity   float64     `bson:"popularity"`
+	Gender       int         `bson:"gender"`
+	ProfilePath  string      `bson:"profile_path"`
+	MovieCredit  MovieCredit `bson:"movie_credits"`
+}
+
+type MovieCredit struct {
+	CastMovie []CastMovie `bson:"cast"`
+}
+
+type CastMovie struct {
+	Id            int32  `bson:"id"`
+	OriginalTitle string `bson:"original_title"`
+	Title         string `bson:"title"`
+	PosterPath    string `bson:"poster_path"`
+	ReleaseDate   string `bson:"release_date"`
+}

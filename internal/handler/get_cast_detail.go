@@ -13,7 +13,7 @@ func (h *Handler) GetCastInfo(c *gin.Context) {
 		id = c.Param("id")
 	)
 
-	result, err := h.tmdb.GetPersonInfo(cast.ToInt(id), nil)
+	result, err := h.biz.GetCastDetail(c.Request.Context(), cast.ToInt32(id))
 	if err != nil {
 		c.JSON(http.StatusOK, util.FailResponse(err.Error()))
 		return
