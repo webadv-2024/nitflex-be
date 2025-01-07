@@ -31,6 +31,9 @@ type Repository interface {
 
 	// Genre
 	GetGenres(ctx context.Context) ([]*Genre, error)
+
+	// Recommendation
+	GetRecommendationsByMovieId(ctx context.Context, tmdb_id int32) ([]*SimilarMovieObj, error)
 }
 
 type repository struct {

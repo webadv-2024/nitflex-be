@@ -55,6 +55,7 @@ func main() {
 	routes.GET("/movies/:id", h.GetMovieDetail)
 	routes.GET("/casts/:id", h.GetCastInfo)
 	routes.GET("/reviews/:id", h.GetReviews)
+	routes.GET("/recommendations/:movie_id", h.GetRecommendations)
 	routes.GET("/movies/popular", h.GetMoviePopular)
 	routes.GET("/movies/upcoming", h.GetMovieUpcoming)
 	routes.GET("genres", h.GetGenres)

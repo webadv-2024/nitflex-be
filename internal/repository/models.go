@@ -130,3 +130,18 @@ type CastMovie struct {
 	PosterPath    string `bson:"poster_path"`
 	ReleaseDate   string `bson:"release_date"`
 }
+
+// /////// RECOMMENDATION /////////
+type SimilarMovie struct {
+	Id           string             `bson:"_id"`
+	TmdbId       int32              `bson:"tmdb_id"`
+	SimilarMovie []*SimilarMovieObj `bson:"similar_movies"`
+}
+
+type SimilarMovieObj struct {
+	OriginalTitle string `bson:"original_title"`
+	PosterPath    string `bson:"poster_path"`
+	BackdropPath  string `bson:"backdrop_path"`
+	ReleaseDate   string `bson:"release_date"`
+	Id            int32  `bson:"id"`
+}
