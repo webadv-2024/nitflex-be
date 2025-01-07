@@ -28,6 +28,9 @@ type Repository interface {
 
 	// Cast
 	GetCastByID(ctx context.Context, tmdb_id int32) (*CastInfo, error)
+
+	// Genre
+	GetGenres(ctx context.Context) ([]*Genre, error)
 }
 
 type repository struct {

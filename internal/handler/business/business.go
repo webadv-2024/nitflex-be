@@ -25,6 +25,9 @@ type Business interface {
 	// Cast
 	GetCastDetail(ctx context.Context, tmdbid int32) (*repository.CastInfo, error)
 
+	// Genres
+	GetGenres(ctx context.Context) ([]*repository.Genre, error)
+
 	// Watchlist methods
 	UpdateWatchlist(ctx context.Context, userID string, movieID string) (*models.TextResponse, error)
 	GetWatchlist(ctx context.Context, userID string) (*models.MovieListResponse, error)
