@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 
+	llm_search "nitflex/internal/adapter/llm_search"
 	adapter "nitflex/internal/adapter/tmdb"
 	"nitflex/internal/models"
 	"nitflex/internal/repository"
@@ -44,16 +45,21 @@ type Business interface {
 
 	// Recommendations
 	GetRecommendations(ctx context.Context, movieId int32) ([]*repository.SimilarMovieObj, error)
+
+	// LLM Search
+	SearchMoviesLLM(ctx context.Context, description string) ([]*repository.Movie, error)
 }
 
 type business struct {
 	repo        repository.Repository
 	tmdbAdapter adapter.TmdbAdapter
+	llmAdapter  llm_search.LLMSearchAdapter
 }
 
-func NewBusiness(gormDb *gorm.DB, mongodb *mongo.Database, tmdbAdapter adapter.TmdbAdapter) Business {
+func NewBusiness(gormDb *gorm.DB, mongodb *mongo.Database, tmdbAdapter adapter.TmdbAdapter, llmAdapter llm_search.LLMSearchAdapter) Business {
 	return &business{
 		repo:        repository.NewRepository(gormDb, mongodb),
 		tmdbAdapter: tmdbAdapter,
+		llmAdapter:  llmAdapter,
 	}
 }
