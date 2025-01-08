@@ -109,6 +109,7 @@ type Rating struct {
 type CastInfo struct {
 	Id           string      `bson:"_id"`
 	TmdbId       int32       `bson:"tmdb_id"`
+	Biography    string      `bson:"biography"`
 	Birthday     string      `bson:"birthday"`
 	DeathDay     string      `bson:"deathday"`
 	Name         string      `bson:"name"`
