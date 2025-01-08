@@ -1,7 +1,7 @@
 package models
 
 type RegisterRequest struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Email    string `bson:"email"`
+	Username string `bson:"username"`
+	Password string `bson:"password"`
 }

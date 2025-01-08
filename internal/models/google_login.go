@@ -1,12 +1,12 @@
 package models
 
 type GoogleLoginRequest struct {
-	AccessToken string `json:"access_token" binding:"required"`
+	AccessToken string `bson:"access_token" binding:"required"`
 }
 
 type GoogleUserInfo struct {
-	Email    string `json:"email"`
-	Name     string `json:"name"`
-	Picture  string `json:"picture"`
-	Verified bool   `json:"verified_email"`
+	Email    string `bson:"email"`
+	Name     string `bson:"name"`
+	Picture  string `bson:"picture"`
+	Verified bool   `bson:"verified_email"`
 }

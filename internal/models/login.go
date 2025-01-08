@@ -1,10 +1,11 @@
 package models
 
 type LoginRequest struct {
-	Username string `json:"username,omitempty"`
-	Password string `json:"password"`
+	Username string `bson:"username,omitempty"`
+	Password string `bson:"password"`
 }
 
 type LoginResponse struct {
-	AccessToken string `json:"access_token"`
+	AccessToken string `bson:"access_token"`
 }
+
