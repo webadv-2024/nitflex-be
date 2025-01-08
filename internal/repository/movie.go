@@ -9,6 +9,7 @@ import (
 
 	"github.com/spf13/cast"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -179,5 +180,38 @@ func (r *repository) FilterMovies(ctx context.Context, params *FilterMoviesParam
 	}
 
 	fmt.Printf("Found %d movies matching the criteria\n", len(movies))
+	return movies, nil
+}
+
+func (r *repository) GetMoviesListByObjectIds(ctx context.Context, movieIDs []string) ([]*Movie, error) {
+	var movies []*Movie
+
+	// Convert string IDs to ObjectIDs
+	objectIDs := make([]primitive.ObjectID, 0, len(movieIDs))
+	for _, id := range movieIDs {
+		objectID, err := primitive.ObjectIDFromHex(id)
+		if err != nil {
+			return nil, fmt.Errorf("invalid ObjectID format: %v", err)
+		}
+		objectIDs = append(objectIDs, objectID)
+	}
+
+	collection := r.mongodb.Collection(Movie{}.TableName())
+
+	// Create filter for multiple movie IDs
+	filter := bson.M{"_id": bson.M{"$in": objectIDs}}
+
+	// Find all matching movies
+	cursor, err := collection.Find(ctx, filter)
+	if err != nil {
+		return nil, fmt.Errorf("error finding movies: %v", err)
+	}
+	defer cursor.Close(ctx)
+
+	// Decode all movies into the slice
+	if err := cursor.All(ctx, &movies); err != nil {
+		return nil, fmt.Errorf("error decoding movies: %v", err)
+	}
+
 	return movies, nil
 }

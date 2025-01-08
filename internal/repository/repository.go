@@ -34,7 +34,9 @@ type Repository interface {
 
 	// Recommendation
 	GetRecommendationsByMovieId(ctx context.Context, tmdb_id int32) ([]*SimilarMovieObj, error)
-	
+
+	// Get movies by ids
+	GetMoviesListByObjectIds(ctx context.Context, movieIDs []string) ([]*Movie, error)
 }
 
 type repository struct {

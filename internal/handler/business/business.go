@@ -48,6 +48,9 @@ type Business interface {
 
 	// LLM Search
 	SearchMoviesLLM(ctx context.Context, description string) ([]*repository.Movie, error)
+
+	// Get movies by ids
+	GetMoviesByIDs(ctx context.Context, movieIDs []string) ([]*repository.Movie, error)
 }
 
 type business struct {
