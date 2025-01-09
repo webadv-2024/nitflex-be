@@ -55,12 +55,17 @@ func main() {
 	routes.GET("/movies/trending", h.GetTrendingMovies)
 	routes.GET("/movies", h.GetMovies)
 	routes.GET("/movies/list", h.GetMoviesByIDs)
-	routes.GET("/movies/:id", h.GetMovieDetail)
-	routes.GET("/casts/:id", h.GetCastInfo)
-	routes.GET("/reviews/:id", h.GetReviews)
 	routes.GET("/recommendations/:movie_id", h.GetRecommendations)
 	routes.GET("/movies/popular", h.GetMoviePopular)
 	routes.GET("/movies/upcoming", h.GetMovieUpcoming)
+	routes.GET("/movies/:id", h.GetMovieDetail)
+
+	routes.GET("/casts/:id", h.GetCastInfo)
+
+	routes.POST("/reviews", middleware.AuthMiddleware(), h.CreateReview)
+	routes.GET("/reviews/:id", h.GetMovieReviews)
+
+
 	routes.GET("genres", h.GetGenres)
 
 	// Add the middleware to protected routes
@@ -77,6 +82,7 @@ func main() {
 	routes.POST("/ratings/", middleware.AuthMiddleware(), h.PostRating)
 	routes.GET("/ratings/", middleware.AuthMiddleware(), h.GetRatingUser)
 	routes.POST("/llmsearch", h.PostLLMSearch)
+
 	routes.Run(":3000")
 }
 

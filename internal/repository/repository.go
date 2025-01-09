@@ -17,6 +17,7 @@ type Repository interface {
 
 	// Movie methods
 	GetMovieByID(ctx context.Context, movieID string) (*Movie, error)
+	GetMovieByIdObject(ctx context.Context, movieID string) (*Movie, error)
 	GetMoviesList(ctx context.Context, movieIDs []int) ([]*Movie, error)
 	GetTrendingMoviesInDay(ctx context.Context) ([]*Movie, error)
 	SearchMoviesByQuery(ctx context.Context, title string) ([]*Movie, error)
@@ -37,6 +38,10 @@ type Repository interface {
 
 	// Get movies by ids
 	GetMoviesListByObjectIds(ctx context.Context, movieIDs []string) ([]*Movie, error)
+
+	// Review methods
+	GetReviewsByMovieId(ctx context.Context, movieId string) ([]*Review, error)
+	CreateReview(ctx context.Context, review *Review) error
 }
 
 type repository struct {
