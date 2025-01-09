@@ -17,6 +17,9 @@ type Business interface {
 	Login(ctx context.Context, request *models.LoginRequest) (*models.LoginResponse, error)
 	GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error)
 
+	// User
+	GetUserByUsername(ctx context.Context, username string) (*repository.User, error)
+
 	// Movies
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*repository.Movie, error)
 	SearchMovies(ctx context.Context, query string) ([]*repository.Movie, error)

@@ -49,6 +49,8 @@ func main() {
 	routes.POST("/login", h.Login)
 	routes.POST("/login/google", h.GoogleLogin)
 
+	routes.GET("/me", middleware.AuthMiddleware(), h.GetMe)
+
 	routes.GET("/healthcheck", h.HealthCheck)
 	routes.GET("/movies/trending", h.GetTrendingMovies)
 	routes.GET("/movies", h.GetMovies)
