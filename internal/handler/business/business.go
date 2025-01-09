@@ -54,6 +54,10 @@ type Business interface {
 
 	// Get movies by ids
 	GetMoviesByIDs(ctx context.Context, movieIDs []string) ([]*repository.Movie, error)
+
+	// Review methods
+	GetMovieReviews(ctx context.Context, movieId string) ([]*repository.ReviewResponse, error)
+	CreateMovieReview(ctx context.Context, userId string, req *repository.CreateReviewRequest) error
 }
 
 type business struct {

@@ -146,3 +146,23 @@ type SimilarMovieObj struct {
 	ReleaseDate   string `bson:"release_date"`
 	Id            int32  `bson:"id"`
 }
+
+// /////// REVIEW /////////
+type Review struct {
+	Id        string    `bson:"_id"`
+	UserId    string    `bson:"user_id"`
+	MovieId   string    `bson:"movie_id"`
+	Content   string    `bson:"content"`
+	CreatedAt time.Time `bson:"created_at"`
+}
+
+type ReviewResponse struct {
+	Id      string `bson:"id"`
+	Author  string `bson:"author"`
+	Content string `bson:"content"`
+}
+
+type CreateReviewRequest struct {
+	MovieId string `json:"movie_id" binding:"required"`
+	Content string `json:"content" binding:"required"`
+}

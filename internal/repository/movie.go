@@ -29,6 +29,21 @@ func (r *repository) GetMovieByID(ctx context.Context, movieID string) (*Movie, 
 	return &movie, err
 }
 
+func (r *repository) GetMovieByIdObject(ctx context.Context, movieID string) (*Movie, error) {
+	var movie Movie
+
+	movieIDObject, err := primitive.ObjectIDFromHex(movieID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid ObjectID format: %v", err)
+	}
+
+	err = r.mongodb.Collection(Movie{}.TableName()).
+		FindOne(ctx, bson.M{"_id": movieIDObject}).
+		Decode(&movie)
+
+	return &movie, err
+}
+
 func (r *repository) GetMoviesList(ctx context.Context, movieIDs []int) ([]*Movie, error) {
 	var movies []*Movie
 
