@@ -3,6 +3,7 @@ package business
 import (
 	"context"
 	"errors"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 
@@ -22,6 +23,10 @@ func (b *business) VerifyResetPasswordToken(ctx context.Context, token string) (
 	// Kiểm tra xem token có còn hiệu lực không
 	if user.ResetPasswordToken != token {
 		return nil, util.NewError("Invalid token")
+	}
+
+	if user.ResetPasswordTokenExpiresAt.Before(time.Now().UTC()) {
+		return nil, util.NewError("Token expired")
 	}
 
 	return user, nil
