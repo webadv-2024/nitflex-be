@@ -230,3 +230,26 @@ func (r *repository) GetMoviesListByObjectIds(ctx context.Context, movieIDs []st
 
 	return movies, nil
 }
+
+func (r *repository) GetPopularMovies(ctx context.Context) ([]*Movie, error) {
+	var movies []*Movie
+
+	collection := r.mongodb.Collection("movies")
+
+	// Set options to sort by popularity in descending order and limit to 10 results
+	opts := options.Find().
+		SetSort(bson.D{{Key: "popularity", Value: -1}}).
+		SetLimit(10)
+
+	cursor, err := collection.Find(ctx, bson.M{}, opts)
+	if err != nil {
+		return nil, fmt.Errorf("error finding movies: %v", err)
+	}
+	defer cursor.Close(ctx)
+
+	if err := cursor.All(ctx, &movies); err != nil {
+		return nil, fmt.Errorf("error decoding movies: %v", err)
+	}
+
+	return movies, nil
+}

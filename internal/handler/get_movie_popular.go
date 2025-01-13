@@ -8,24 +8,8 @@ import (
 )
 
 func (h *Handler) GetMoviePopular(c *gin.Context) {
-	var (
-		language = c.Query("language")
-		page     = c.Query("page")
-	)
-
-	if language == "" {
-		language = "en-US"
-	}
-	if page == "" {
-		page = "1"
-	}
-
-	options := map[string]string{
-		"language": language,
-		"page":     page,
-	}
-
-	result, err := h.tmdb.GetMoviePopular(options)
+	// Get context from gin
+	result, err := h.biz.GetPopularMovies(c.Request.Context())
 	if err != nil {
 		c.JSON(http.StatusOK, util.FailResponse(err.Error()))
 		return

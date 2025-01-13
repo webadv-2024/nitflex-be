@@ -30,7 +30,7 @@ type Business interface {
 	SearchMovies(ctx context.Context, query string) ([]*repository.Movie, error)
 	FilterMovies(ctx context.Context, params *repository.FilterMoviesParams) ([]*repository.Movie, error)
 	GetMovieDetail(ctx context.Context, id string) (*repository.Movie, error)
-
+	GetPopularMovies(ctx context.Context) ([]*repository.Movie, error)
 	// Cast
 	GetCastDetail(ctx context.Context, tmdbid int32) (*repository.CastInfo, error)
 
