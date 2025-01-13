@@ -52,8 +52,9 @@ func (b *business) Register(ctx context.Context, request *models.RegisterRequest
 		Password:        hashedPassword,
 		ActivationToken: activationToken,
 		IsActivated:     false,
-		CreatedAt:       time.Now().UTC(),
-		UpdatedAt:       time.Now().UTC(),
+
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	})
 	if err != nil {
 		return err
