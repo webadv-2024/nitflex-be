@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
@@ -14,6 +15,11 @@ type Repository interface {
 	CreateUser(ctx context.Context, user *User) error
 	UpdateRefreshToken(ctx context.Context, params *UpdateRefreshTokenParams) error
 	UpdateUser(ctx context.Context, user *User) error
+	GetUserByActivationToken(ctx context.Context, token string) (*User, error)
+	UpdateUserActivationStatus(ctx context.Context, userID string, isActive bool) error
+	UpdateResetPasswordToken(ctx context.Context, username string, token string, tokenExpiresAt time.Time) error
+	GetUserByResetPasswordToken(ctx context.Context, token string) (*User, error)
+	UpdatePassword(ctx context.Context, username string, password string) error
 
 	// Movie methods
 	GetMovieByID(ctx context.Context, movieID string) (*Movie, error)

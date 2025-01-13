@@ -8,4 +8,3 @@ type LoginRequest struct {
 type LoginResponse struct {
 	AccessToken string `bson:"access_token"`
 }
-

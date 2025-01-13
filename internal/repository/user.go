@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -39,6 +40,7 @@ func (r *repository) GetUserByUsername(ctx context.Context, username string) (*U
 }
 
 func (r *repository) GetUserByEmail(ctx context.Context, email string) (*User, error) {
+	fmt.Println("Find user with email: ", email)
 	var user User
 	err := r.mongodb.Collection(User{}.TableName()).
 		FindOne(ctx, bson.M{"email": email}).
@@ -84,11 +86,11 @@ func (r *repository) UpdateUser(ctx context.Context, user *User) error {
 	// Prepare the fields to update (exclude the ID field)
 	update := bson.M{
 		"$set": bson.M{
-			"username":     user.Username,
-			"email":        user.Email,
-			"password":     user.Password,
-			"updated_at":   user.UpdatedAt, // Ensure you set this to the current timestamp before calling the function
-			"watchlist":    user.Watchlist,
+			"username":      user.Username,
+			"email":         user.Email,
+			"password":      user.Password,
+			"updated_at":    user.UpdatedAt, // Ensure you set this to the current timestamp before calling the function
+			"watchlist":     user.Watchlist,
 			"favorite_list": user.FavoriteList,
 		},
 	}
@@ -105,3 +107,41 @@ func (r *repository) UpdateUser(ctx context.Context, user *User) error {
 	return nil
 }
 
+func (r *repository) GetUserByActivationToken(ctx context.Context, token string) (*User, error) {
+	var user User
+	err := r.mongodb.Collection(User{}.TableName()).FindOne(ctx, bson.M{"activation_token": token}).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (r *repository) GetUserByResetPasswordToken(ctx context.Context, token string) (*User, error) {
+	var user User
+	err := r.mongodb.Collection(User{}.TableName()).FindOne(ctx, bson.M{"reset_password_token": token}).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (r *repository) UpdateUserActivationStatus(ctx context.Context, username string, isActive bool) error {
+	_, err := r.mongodb.Collection(User{}.TableName()).UpdateOne(ctx, bson.M{"username": username}, bson.M{
+		"$set": bson.M{"is_activated": isActive, "activation_token": ""},
+	})
+	return err
+}
+
+func (r *repository) UpdateResetPasswordToken(ctx context.Context, username string, token string, tokenExpiresAt time.Time) error {
+	_, err := r.mongodb.Collection(User{}.TableName()).UpdateOne(ctx, bson.M{"username": username}, bson.M{
+		"$set": bson.M{"reset_password_token": token, "reset_password_token_expires_at": tokenExpiresAt},
+	})
+	return err
+}
+
+func (r *repository) UpdatePassword(ctx context.Context, username string, password string) error {
+	_, err := r.mongodb.Collection(User{}.TableName()).UpdateOne(ctx, bson.M{"username": username}, bson.M{
+		"$set": bson.M{"password": password, "reset_password_token": "", "reset_password_token_expires_at": time.Time{}},
+	})
+	return err
+}

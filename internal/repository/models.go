@@ -6,16 +6,20 @@ import (
 
 // /////// USERS /////////
 type User struct {
-	Id                    string     `bson:"_id,omitempty"`
-	Username              string     `bson:"username"`
-	Email                 string     `bson:"email"`
-	Password              string     `bson:"password"`
-	RefreshToken          string     `bson:"refresh_token,omitempty"`
-	RefreshTokenExpiresAt *time.Time `bson:"refresh_token_expires_at,omitempty"`
-	CreatedAt             time.Time  `bson:"created_at"`
-	UpdatedAt             time.Time  `bson:"updated_at"`
-	Watchlist             []int      `bson:"watchlist,omitempty"`
-	FavoriteList          []int      `bson:"favorite_list,omitempty"`
+	Id                          string     `bson:"_id,omitempty"`
+	Username                    string     `bson:"username"`
+	Email                       string     `bson:"email"`
+	Password                    string     `bson:"password"`
+	RefreshToken                string     `bson:"refresh_token,omitempty"`
+	RefreshTokenExpiresAt       *time.Time `bson:"refresh_token_expires_at,omitempty"`
+	ActivationToken             string     `bson:"activation_token,omitempty"`
+	IsActivated                 bool       `bson:"is_activated,omitempty"`
+	ResetPasswordToken          string     `bson:"reset_password_token,omitempty"`
+	ResetPasswordTokenExpiresAt time.Time  `bson:"reset_password_token_expires_at,omitempty"`
+	CreatedAt                   time.Time  `bson:"created_at"`
+	UpdatedAt                   time.Time  `bson:"updated_at"`
+	Watchlist                   []int      `bson:"watchlist,omitempty"`
+	FavoriteList                []int      `bson:"favorite_list,omitempty"`
 }
 
 func (User) TableName() string { return "users" }

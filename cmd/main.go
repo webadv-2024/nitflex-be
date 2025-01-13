@@ -47,7 +47,10 @@ func main() {
 
 	routes.POST("/register", h.Register)
 	routes.POST("/login", h.Login)
+	routes.GET("/activate", h.ActivateEmail)
 	routes.POST("/login/google", h.GoogleLogin)
+	routes.GET("/reset-password", h.RequestResetPassword)
+	routes.POST("/reset-password", h.ResetPassword)
 
 	routes.GET("/me", middleware.AuthMiddleware(), h.GetMe)
 
@@ -64,7 +67,6 @@ func main() {
 
 	routes.POST("/reviews", middleware.AuthMiddleware(), h.CreateReview)
 	routes.GET("/reviews/:id", h.GetMovieReviews)
-
 
 	routes.GET("genres", h.GetGenres)
 

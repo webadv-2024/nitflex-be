@@ -16,6 +16,11 @@ type Business interface {
 	Register(ctx context.Context, request *models.RegisterRequest) error
 	Login(ctx context.Context, request *models.LoginRequest) (*models.LoginResponse, error)
 	GoogleLogin(ctx context.Context, request *models.GoogleLoginRequest) (*models.LoginResponse, error)
+	VerifyActivationToken(ctx context.Context, token string) (*repository.User, error)
+	VerifyResetPasswordToken(ctx context.Context, token string) (*repository.User, error)
+	ActivateUser(ctx context.Context, userId string) error
+	RequestResetPassword(ctx context.Context, requst *models.RequestResetPasswordRequest) error
+	UpdatePassword(ctx context.Context, username, password string) error
 
 	// User
 	GetUserByUsername(ctx context.Context, username string) (*repository.User, error)
