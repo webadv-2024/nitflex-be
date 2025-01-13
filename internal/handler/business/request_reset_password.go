@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"net/smtp"
+	"os"
 	"time"
 
 	"nitflex/internal/models"
@@ -49,7 +50,7 @@ func (b *business) generateResetPasswordToken() string {
 }
 
 func (b *business) sendResetPasswordEmail(toEmail, resetPasswordToken string) error {
-	resetPasswordLink := fmt.Sprintf("http://localhost:3000/reset-password?token=%s", resetPasswordToken)
+	resetPasswordLink := fmt.Sprintf("%s/reset-password?token=%s", os.Getenv("FE_URL"), resetPasswordToken)
 
 	// Email headers
 	subject := "Subject: Reset Your Password\n"

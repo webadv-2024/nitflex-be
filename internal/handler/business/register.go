@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/smtp"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -78,7 +79,7 @@ func (b *business) generateActivationToken() string {
 
 func (b *business) sendActivationEmail(toEmail, activationToken string) error {
 	var (
-		activationLink = fmt.Sprintf("http://localhost:3000/activate?token=%s", activationToken)
+		activationLink = fmt.Sprintf("%s/activate?token=%s", os.Getenv("FE_URL"), activationToken)
 		body           = fmt.Sprintf("Welcome to Your App!\n\nPlease activate your account by clicking this link:\n%s", activationLink)
 		auth           = smtp.PlainAuth("", "giabach9102@gmail.com", "mtongunughwbzjmt", "smtp.gmail.com")
 		err            = smtp.SendMail("smtp.gmail.com:587", auth, "giabach9102@gmail.com", []string{toEmail}, []byte(body))
