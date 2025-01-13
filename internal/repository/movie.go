@@ -253,3 +253,21 @@ func (r *repository) GetPopularMovies(ctx context.Context) ([]*Movie, error) {
 
 	return movies, nil
 }
+
+func (r *repository) GetMovieTrailers(ctx context.Context) ([]*Trailer, error) {
+	var trailers []*Trailer
+
+	collection := r.mongodb.Collection("trailers")
+
+	cursor, err := collection.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, fmt.Errorf("error finding trailers: %v", err)
+	}
+	defer cursor.Close(ctx)
+
+	if err := cursor.All(ctx, &trailers); err != nil {
+		return nil, fmt.Errorf("error decoding trailers: %v", err)
+	}
+
+	return trailers, nil
+}

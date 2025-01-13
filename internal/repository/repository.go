@@ -48,6 +48,9 @@ type Repository interface {
 	// Review methods
 	GetReviewsByMovieId(ctx context.Context, movieId string) ([]*Review, error)
 	CreateReview(ctx context.Context, review *Review) error
+
+	// Trailer methods
+	GetMovieTrailers(ctx context.Context) ([]*Trailer, error)
 }
 
 type repository struct {

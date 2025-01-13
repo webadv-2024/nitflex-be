@@ -170,3 +170,11 @@ type CreateReviewRequest struct {
 	MovieId string `json:"movie_id" binding:"required"`
 	Content string `json:"content" binding:"required"`
 }
+
+// /////// TRAILER /////////
+type Trailer struct {
+	Id           string `bson:"_id"`
+	Link         string `bson:"link"`
+	Title        string `bson:"title"`
+	Description  string `bson:"description"`
+}
