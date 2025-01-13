@@ -49,8 +49,8 @@ func main() {
 	routes.POST("/login", h.Login)
 	routes.GET("/activate", h.ActivateEmail)
 	routes.POST("/login/google", h.GoogleLogin)
-	routes.GET("/reset-password", h.RequestResetPassword)
-	routes.POST("/reset-password", h.ResetPassword)
+	routes.POST("/reset-password", h.RequestResetPassword)
+	routes.POST("/update-password", h.ResetPassword)
 
 	routes.GET("/me", middleware.AuthMiddleware(), h.GetMe)
 
