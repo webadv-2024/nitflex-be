@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -86,30 +87,43 @@ func (r *repository) GetTrendingMoviesInDay(ctx context.Context) ([]*Movie, erro
 	return movies, nil
 }
 
-func (r *repository) SearchMoviesByQuery(ctx context.Context, title string) ([]*Movie, error) {
+func (r *repository) SearchMoviesByQuery(ctx context.Context, title string, page, perPage int) ([]*Movie, int, error) {
 	var movies []*Movie
-
 	collection := r.mongodb.Collection("movies")
 
 	// Create filter for title
-	filter := bson.M{"title": bson.M{"$regex": title, "$options": "i"}} // Case-insensitive search
+	filter := bson.M{"title": bson.M{"$regex": title, "$options": "i"}}
+
+	// Count total documents for pagination
+	total, err := collection.CountDocuments(ctx, filter)
+	if err != nil {
+		return nil, 0, fmt.Errorf("error counting documents: %v", err)
+	}
+
+	// Calculate total pages
+	totalPages := int(math.Ceil(float64(total) / float64(perPage)))
+
+	// Set up pagination options
+	skip := (page - 1) * perPage
+	opts := options.Find().
+		SetSkip(int64(skip)).
+		SetLimit(int64(perPage))
 
 	// Find all matching movies
-	cursor, err := collection.Find(ctx, filter)
+	cursor, err := collection.Find(ctx, filter, opts)
 	if err != nil {
-		return nil, fmt.Errorf("error finding movies: %v", err)
+		return nil, 0, fmt.Errorf("error finding movies: %v", err)
 	}
 	defer cursor.Close(ctx)
 
-	// Decode all movies into the slice
 	if err := cursor.All(ctx, &movies); err != nil {
-		return nil, fmt.Errorf("error decoding movies: %v", err)
+		return nil, 0, fmt.Errorf("error decoding movies: %v", err)
 	}
 
-	return movies, nil
+	return movies, totalPages, nil
 }
 
-func (r *repository) FilterMovies(ctx context.Context, params *FilterMoviesParams) ([]*Movie, error) {
+func (r *repository) FilterMovies(ctx context.Context, params *FilterMoviesParams) ([]*Movie, int, error) {
 	var movies []*Movie
 	collection := r.mongodb.Collection("movies")
 
@@ -176,26 +190,40 @@ func (r *repository) FilterMovies(ctx context.Context, params *FilterMoviesParam
 
 	fmt.Printf("Final MongoDB filter: %+v\n", filter)
 
-	// Find all matching movies
-	cursor, err := collection.Find(ctx, filter)
+	// Count total documents for pagination
+	total, err := collection.CountDocuments(ctx, filter)
 	if err != nil {
-		return nil, fmt.Errorf("error finding movies: %v", err)
+		return nil, 0, fmt.Errorf("error counting documents: %v", err)
+	}
+
+	// Calculate total pages
+	totalPages := int(math.Ceil(float64(total) / float64(params.PerPage)))
+
+	// Set up pagination options
+	skip := (params.Page - 1) * params.PerPage
+	opts := options.Find().
+		SetSkip(int64(skip)).
+		SetLimit(int64(params.PerPage))
+
+	// Find all matching movies
+	cursor, err := collection.Find(ctx, filter, opts)
+	if err != nil {
+		return nil, 0, fmt.Errorf("error finding movies: %v", err)
 	}
 	defer cursor.Close(ctx)
 
-	// Decode all movies into the slice
 	if err := cursor.All(ctx, &movies); err != nil {
-		return nil, fmt.Errorf("error decoding movies: %v", err)
+		return nil, 0, fmt.Errorf("error decoding movies: %v", err)
 	}
 
 	// Check if any movies were found
 	if len(movies) == 0 {
 		fmt.Println("No documents found matching the filter")
-		return movies, nil
+		return movies, totalPages, nil
 	}
 
 	fmt.Printf("Found %d movies matching the criteria\n", len(movies))
-	return movies, nil
+	return movies, totalPages, nil
 }
 
 func (r *repository) GetMoviesListByObjectIds(ctx context.Context, movieIDs []string) ([]*Movie, error) {

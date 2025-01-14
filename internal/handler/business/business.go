@@ -27,8 +27,8 @@ type Business interface {
 
 	// Movies
 	GetTrendingMovies(ctx context.Context, timeWindow string) ([]*repository.Movie, error)
-	SearchMovies(ctx context.Context, query string) ([]*repository.Movie, error)
-	FilterMovies(ctx context.Context, params *repository.FilterMoviesParams) ([]*repository.Movie, error)
+	SearchMovies(ctx context.Context, query string, page, perPage int) ([]*repository.Movie, int, error)
+	FilterMovies(ctx context.Context, params *repository.FilterMoviesParams) ([]*repository.Movie, int, error)
 	GetMovieDetail(ctx context.Context, id string) (*repository.Movie, error)
 	GetPopularMovies(ctx context.Context) ([]*repository.Movie, error)
 	// Cast

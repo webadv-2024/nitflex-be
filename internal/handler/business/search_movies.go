@@ -5,6 +5,6 @@ import (
 	"nitflex/internal/repository"
 )
 
-func (b *business) SearchMovies(ctx context.Context, query string) ([]*repository.Movie, error) {
-	return b.repo.SearchMoviesByQuery(ctx, query)
+func (b *business) SearchMovies(ctx context.Context, query string, page, perPage int) ([]*repository.Movie, int, error) {
+	return b.repo.SearchMoviesByQuery(ctx, query, page, perPage)
 }

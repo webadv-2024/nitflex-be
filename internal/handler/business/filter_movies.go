@@ -5,7 +5,7 @@ import (
 	"nitflex/internal/repository"
 )
 
-func (b *business) FilterMovies(ctx context.Context, params *repository.FilterMoviesParams) ([]*repository.Movie, error) {
+func (b *business) FilterMovies(ctx context.Context, params *repository.FilterMoviesParams) ([]*repository.Movie, int, error) {
 	if params.MaxRating == 0 {
 		params.MaxRating = 10
 	}

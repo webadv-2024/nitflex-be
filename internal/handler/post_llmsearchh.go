@@ -13,22 +13,9 @@ type LLMSearchRequest struct {
 
 // GetLLMSearch handles movie search requests using LLM
 func (h *Handler) PostLLMSearch(c *gin.Context) {
-	var req LLMSearchRequest
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, util.FailResponse(err.Error()))
-		return
+	response := gin.H{
+		"data": []string{"test"},
 	}
 
-	if req.Description == "" {
-		c.JSON(http.StatusBadRequest, util.FailResponse("Description is required"))
-		return
-	}
-
-	movies, err := h.biz.SearchMoviesLLM(c.Request.Context(), req.Description)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, util.FailResponse(err.Error()))
-		return
-	}
-
-	c.JSON(http.StatusOK, util.SuccessResponse(movies))
+	c.JSON(http.StatusOK, util.SuccessResponse(response))
 }

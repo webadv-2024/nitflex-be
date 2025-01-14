@@ -26,8 +26,8 @@ type Repository interface {
 	GetMovieByIdObject(ctx context.Context, movieID string) (*Movie, error)
 	GetMoviesList(ctx context.Context, movieIDs []int) ([]*Movie, error)
 	GetTrendingMoviesInDay(ctx context.Context) ([]*Movie, error)
-	SearchMoviesByQuery(ctx context.Context, title string) ([]*Movie, error)
-	FilterMovies(ctx context.Context, params *FilterMoviesParams) ([]*Movie, error)
+	SearchMoviesByQuery(ctx context.Context, title string, page, perPage int) ([]*Movie, int, error)
+	FilterMovies(ctx context.Context, params *FilterMoviesParams) ([]*Movie, int, error)
 	GetPopularMovies(ctx context.Context) ([]*Movie, error)
 	// Rating methods
 	CreateRating(ctx context.Context, userID string, movieID string, rating int) (*Rating, error)

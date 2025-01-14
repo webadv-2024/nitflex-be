@@ -15,4 +15,6 @@ type FilterMoviesParams struct {
 	ReleaseDateGte string
 	ReleaseDateLte string
 	Actors         string
+	Page           int
+	PerPage        int
 }
