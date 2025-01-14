@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"gorm.io/gorm"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"nitflex/constant"
 	"nitflex/internal/models"
@@ -25,12 +25,12 @@ func (b *business) GoogleLogin(ctx context.Context, request *models.GoogleLoginR
 
 	// Check if user exists
 	user, err := b.repo.GetUserByEmail(ctx, userInfo.Email)
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+	if err != nil && !errors.Is(err, mongo.ErrNoDocuments) {
 		return nil, util.NewError(constant.ErrorMessage_InternalServerError)
 	}
 
 	// Create new user if not exists
-	if errors.Is(err, gorm.ErrRecordNotFound) {
+	if errors.Is(err, mongo.ErrNoDocuments) {
 		user = &repository.User{
 			Email:    userInfo.Email,
 			Username: userInfo.Name,
